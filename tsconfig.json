@@ -12,7 +12,7 @@
 
     "jsx": "react",
     "jsxFactory": "React.createElement",
-    "experimentalDecorators": false,
+    "experimentalDecorators": true,
     "emitDecoratorMetadata": false,
 
     "types": ["node"],

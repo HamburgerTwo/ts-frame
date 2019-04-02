@@ -35,6 +35,10 @@ const webpackConfig: webpack.Configuration = {
   resolve: {
     modules: ['node_modules'],
     extensions: ['.ts', '.tsx', '.js'],
+    alias: {
+
+      '~': paths.SRC_DIR, // root
+    }
   },
 
   module: {
@@ -52,7 +56,7 @@ const webpackConfig: webpack.Configuration = {
       },
 
       {
-        test: /\.(css|less|sass|scss)$/,
+        test: /\.(css|less)$/,
         rules: [
           {
             loader: isDebug ? 'style-loader' : MiniCssExtractPlugin.loader,
@@ -79,7 +83,6 @@ const webpackConfig: webpack.Configuration = {
               localIdentName: isDebug ? '[name]-[local]-[hash:base64:5]' : '[hash:base64:5]',
             },
           },
-
           // Apply PostCSS plugins including autoprefixer
           {
             loader: 'postcss-loader',
@@ -106,17 +109,54 @@ const webpackConfig: webpack.Configuration = {
           //   },
           // },
 
-          // Compile Sass to CSS
+
+
+
+        ],
+      },
+       // Compile Sass to CSS
           // https://github.com/webpack-contrib/sass-loader
           // Install dependencies before uncommenting: yarn add --dev sass-loader node-sass
-          // {
-          //   test: /\.(scss|sass)$/,
-          //   loader: 'sass-loader',
-          //   options: {
-          //     sourceMap: isDebug,
-          //   },
-          // },
-        ],
+      {
+        test: /\.(scss|sass)$/,
+
+        rules:[
+          {
+            loader: isDebug ? 'style-loader' : MiniCssExtractPlugin.loader,
+          },
+          // Apply PostCSS plugins including autoprefixer
+
+          {
+            include: paths.SRC_DIR,
+            exclude: /node_modules/,
+            loader: 'typings-for-css-modules-loader',
+            options: {
+              modules: true,
+              sass: true,
+              namedExport: true,
+            }
+          },{
+          loader: 'sass-loader',
+          options: {
+                sourceMap: isDebug,
+                data: '@import "variables.scss";',
+								includePaths: [`${paths.SRC_DIR}/style`]
+          },
+        },
+        {
+          loader: 'postcss-loader',
+          options: {
+            plugins: [
+              // Add vendor prefixes to CSS rules using values from caniuse.com
+              // https://github.com/postcss/autoprefixer
+              require('autoprefixer')({
+                // flexbox: 'no-2009', // Recommended for modern browsers
+                browsers: pkg.browserslist,
+              }),
+            ],
+          },
+        },]
+
       },
     ],
   },
