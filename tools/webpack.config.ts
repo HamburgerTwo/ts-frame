@@ -78,9 +78,6 @@ const webpackConfig: webpack.Configuration = {
             options: {
               importLoaders: 1,
               sourceMap: isDebug,
-              // CSS Modules https://github.com/css-modules/css-modules
-              modules: true,
-              localIdentName: isDebug ? '[name]-[local]-[hash:base64:5]' : '[hash:base64:5]',
             },
           },
           // Apply PostCSS plugins including autoprefixer
@@ -156,6 +153,19 @@ const webpackConfig: webpack.Configuration = {
             ],
           },
         },]
+
+      },
+      {
+        test: /\.(jpg|png|jpeg)$/,
+
+        rules:[
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[path][name].[ext]',
+            },
+          },
+          ]
 
       },
     ],

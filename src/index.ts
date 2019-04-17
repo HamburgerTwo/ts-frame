@@ -1,4 +1,4 @@
-import './style/common.scss';
+import './index.css'
 import './core/polyfills';
 import Reactdom from 'react-dom';
 import './core/setRem';

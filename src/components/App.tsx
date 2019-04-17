@@ -1,16 +1,24 @@
 import React, { Component } from 'react';
 import s from './App.scss';
-import {HashRouter, Route, Link} from 'react-router-dom';
+import { Router, Route, Switch } from 'react-router-dom';
 import Home from '../routes/home';
+import Rank from '../routes/rank';
 import history from '../core/history';
 
 import { Provider } from 'react-redux';
-import configureStore from '../store/configureStore'
+import configureStore from '../store/configureStore';
 const store = configureStore(history);
 export default class App extends Component {
   render() {
-    return (<Provider store={store}><HashRouter>
+    return (
+      <Provider store={store}>
+        <Router history={history}>
+          <Switch>
+            <Route path="/rank" component={Rank} />
             <Route path="/" component={Home} />
-      </HashRouter></Provider>)
+          </Switch>
+        </Router>
+      </Provider>
+    );
   }
 }
