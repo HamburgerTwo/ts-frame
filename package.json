@@ -35,6 +35,7 @@
     "react-router-redux": "^4.0.8",
     "redux": "^3.7.2",
     "redux-thunk": "^2.3.0",
+    "rmc-pull-updown-to-refresh": "^1.0.8",
     "sass-loader": "^7.1.0",
     "typed-css-modules": "^0.4.2",
     "typings-for-css-modules-loader": "^1.7.0",
@@ -87,6 +88,13 @@
     "webpack-dev-middleware": "^3.2.0",
     "webpack-hot-middleware": "^2.22.3"
   },
+  "browserslist": [
+    "Android 2.3",
+    "Android >= 4",
+    "Chrome >= 29",
+    "iOS >= 6",
+    "Safari >= 7.1"
+  ],
   "author": "Wind4 <puxiaping@gmail.com>",
   "license": "MIT"
 }

@@ -1,11 +1,10 @@
-import React, { Component, ComponentClass } from 'react'
-import s from './index.scss'
-import { connect } from 'react-redux'
-import history from '~/core/history'
+import React, { Component, ComponentClass } from 'react';
+import s from './index.scss';
+import { connect } from 'react-redux';
+import { ThunkDispatch } from 'redux-thunk'
 import * as Actions from '../../actions/user'
 import { User, UserAction } from '../../types/user'
 
-console.log(111)
 
 interface ComponentOwnProps {
   user: User
@@ -30,10 +29,6 @@ class Home extends Component<ComponentProps, {}> {
       role: []
     })
   }
-
-  public onConfirm = () => {
-    history.push('/role')
-  }
   render() {
     const { user } = this.props;
     return (<div className={s.root} onClick={this.saveUser}>
@@ -51,13 +46,7 @@ class Home extends Component<ComponentProps, {}> {
         </div>
       </div>
       <div className={s.fieldset}>
-        <div className={s.label}>手机号</div>
-        <div className={s.inputBox}>
-          <div className={s.inputStyle}><input className={s.innerInput} placeholder="请输入手机号" /></div>
-        </div>
-      </div>
-      <div className={s.fieldset}>
-        <button className={s.confirmBtn} onClick={this.onConfirm}>确定</button>
+        <button className={s.confirmBtn}>确定</button>
       </div>
     </div>)
   }

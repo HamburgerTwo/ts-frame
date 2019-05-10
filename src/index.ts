@@ -4,6 +4,7 @@ import Reactdom from 'react-dom';
 import './core/setRem';
 import React from 'react';
 import App from './components/App'
+
 if (__DEV__) {
   console.info('development');
 }

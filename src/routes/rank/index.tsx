@@ -5,7 +5,7 @@ import { ThunkDispatch } from 'redux-thunk'
 import classNames from 'classnames';
 import * as Actions from '../../actions/user'
 import { User, UserAction } from '../../types/user'
-
+import PullToRefresh from 'rmc-pull-updown-to-refresh';
 
 interface ComponentOwnProps {
   user: User
@@ -30,56 +30,125 @@ class Rank extends Component<ComponentProps, {}> {
       role: []
     })
   }
+  public onPullUp = () => {
+    console.log('111')
+  }
+  public onPullDown = () => {
+  }
   render() {
     const { user } = this.props;
-    return (<div className={s.root} onClick={this.saveUser}>
+    return (<div className={s.root}>
       <div className={s.rank}>
         <div className={s.cup}>XX排行榜</div>
         <div className={s.title}>数据截止：昨天</div>
         <table className={s.table}>
-          <tr className={s.header}>
-            <th>排名</th>
-            <th>店员名称</th>
-            <th>大区</th>
-            <th>连锁名称</th>
-            <th>积分额</th>
-          </tr>
-          <tr className={classNames(s.no1, s.row)}>
-            <td></td>
-            <td>李杰</td>
-            <td>华北大区</td>
-            <td>天保堂</td>
-            <td>686</td>
-          </tr>
-          <tr className={classNames(s.no2, s.row)}>
-          <td></td>
-            <td>李杰</td>
-            <td>华北大区</td>
-            <td>天保堂</td>
-            <td>686</td>
-          </tr>
-          <tr className={classNames(s.no3, s.row)}>
-          <td></td>
-            <td>李杰</td>
-            <td>华北大区</td>
-            <td>天保堂</td>
-            <td>686</td>
-          </tr>
-          <tr className={classNames(s.other, s.row)}>
-          <td>4</td>
-            <td>李杰</td>
-            <td>华北大区</td>
-            <td>天保堂</td>
-            <td>686</td>
-          </tr>
-          <tr className={classNames(s.other, s.row)}>
-          <td>5</td>
-            <td>李杰</td>
-            <td>华北大区</td>
-            <td>天保堂</td>
-            <td>686</td>
-          </tr>
+          <thead>
+            <tr className={s.header}>
+              <th className={s.col1}>排名</th>
+              <th className={s.col2}>店员名称</th>
+              <th className={s.col3}>大区</th>
+              <th className={s.col4}>连锁名称</th>
+              <th className={s.col5}>积分额</th>
+            </tr>
+          </thead>
         </table>
+        <div className={s.rankBox}>
+          <PullToRefresh
+            disablePullDown={true}
+            pullUpText="加载更多"
+            onPullUp={this.onPullUp}
+            
+          >
+            <table className={s.table}>
+              <tbody>
+                <tr className={classNames(s.no1, s.row)}>
+                  <td className={s.col1}></td>
+                  <td className={s.col2}>李杰</td>
+                  <td className={s.col3}>华北大区</td>
+                  <td className={s.col4}>天保堂</td>
+                  <td className={s.col5}>686</td>
+                </tr>
+                <tr className={classNames(s.no2, s.row)}>
+                  <td className={s.col1}></td>
+                  <td className={s.col2}>李杰</td>
+                  <td className={s.col3}>华北大区</td>
+                  <td className={s.col4}>天保堂</td>
+                  <td className={s.col5}>686</td>
+                </tr>
+                <tr className={classNames(s.no3, s.row)}>
+                  <td className={s.col1}></td>
+                  <td className={s.col2}>李杰</td>
+                  <td className={s.col3}>华北大区</td>
+                  <td className={s.col4}>天保堂</td>
+                  <td className={s.col5}>686</td>
+                </tr>
+                <tr className={classNames(s.other, s.row)}>
+                  <td className={s.col1}>4</td>
+                  <td className={s.col2}>李杰</td>
+                  <td className={s.col3}>华北大区</td>
+                  <td className={s.col4}>天保堂</td>
+                  <td className={s.col5}>686</td>
+                </tr>
+                <tr className={classNames(s.other, s.row)}>
+                  <td className={s.col1}>5</td>
+                  <td className={s.col2}>李杰</td>
+                  <td className={s.col3}>华北大区</td>
+                  <td className={s.col4}>天保堂</td>
+                  <td className={s.col5}>686</td>
+                </tr>
+                <tr className={classNames(s.other, s.row)}>
+                  <td className={s.col1}>5</td>
+                  <td className={s.col2}>李杰</td>
+                  <td className={s.col3}>华北大区</td>
+                  <td className={s.col4}>天保堂</td>
+                  <td className={s.col5}>686</td>
+                </tr>
+                <tr className={classNames(s.other, s.row)}>
+                  <td className={s.col1}>5</td>
+                  <td className={s.col2}>李杰</td>
+                  <td className={s.col3}>华北大区</td>
+                  <td className={s.col4}>天保堂</td>
+                  <td className={s.col5}>686</td>
+                </tr>
+                <tr className={classNames(s.other, s.row)}>
+                  <td className={s.col1}>5</td>
+                  <td className={s.col2}>李杰</td>
+                  <td className={s.col3}>华北大区</td>
+                  <td className={s.col4}>天保堂</td>
+                  <td className={s.col5}>686</td>
+                </tr>
+                <tr className={classNames(s.other, s.row)}>
+                  <td className={s.col1}>5</td>
+                  <td className={s.col2}>李杰</td>
+                  <td className={s.col3}>华北大区</td>
+                  <td className={s.col4}>天保堂</td>
+                  <td className={s.col5}>686</td>
+                </tr>
+                <tr className={classNames(s.other, s.row)}>
+                  <td className={s.col1}>5</td>
+                  <td className={s.col2}>李杰</td>
+                  <td className={s.col3}>华北大区</td>
+                  <td className={s.col4}>天保堂</td>
+                  <td className={s.col5}>686</td>
+                </tr>
+                <tr className={classNames(s.other, s.row)}>
+                  <td className={s.col1}>5</td>
+                  <td className={s.col2}>李杰</td>
+                  <td className={s.col3}>华北大区</td>
+                  <td className={s.col4}>天保堂</td>
+                  <td className={s.col5}>686</td>
+                </tr>
+                <tr className={classNames(s.other, s.row)}>
+                  <td className={s.col1}>5</td>
+                  <td className={s.col2}>李杰</td>
+                  <td className={s.col3}>华北大区</td>
+                  <td className={s.col4}>天保堂</td>
+                  <td className={s.col5}>686</td>
+                </tr>
+              </tbody>
+            </table>
+          </PullToRefresh>
+        </div>
       </div>
     </div>)
   }
