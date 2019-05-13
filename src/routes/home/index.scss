@@ -36,15 +36,18 @@
   border: 0 solid #000;
   border-radius: fixpx(10);
   width: 100%;
+  height: fixpx(80);
   background: #fff;
+  line-height: fixpx(80);
 }
 
 .innerInput {
   box-sizing: border-box;
-  height: fixpx(80);
-  width: fixpx(508);
+  
+  width: fixpx(448);
   border-radius: fixpx(10);
-  line-height: fixpx(80);
+  
+  margin: 0;
   border: 0 solid #000;
   color: #000;
   outline: none;
@@ -52,7 +55,7 @@
 }
 
 .queryBtn {
-  width: fixpx(146);
+  width: fixpx(206);
   height: fixpx(48);
   background: #0e2a8b;
   color: #fff;

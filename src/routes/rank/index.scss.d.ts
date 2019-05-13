@@ -15,3 +15,4 @@ export const col2: string;
 export const col3: string;
 export const col4: string;
 export const col5: string;
+export const nomore: string;

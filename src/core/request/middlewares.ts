@@ -61,7 +61,6 @@ export const json: Middleware = (context: Context<{ json: boolean }>, next: Next
     ? next()
     : next()
         .then<any>(response => response.json())
-        .then(jsonObj => (jsonObj.rc === 1 ? jsonObj.data : Promise.reject(jsonObj)));
 };
 
 export const timeout: Middleware = (context: Context<{ timeout?: number }>, next: NextFunction) => {
