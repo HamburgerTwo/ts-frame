@@ -1,4 +1,4 @@
-import React, { Component, ComponentClass } from 'react'
+import React, { Component } from 'react'
 import s from './index.scss'
 import { connect } from 'react-redux'
 import history from '../../core/history'
@@ -6,15 +6,11 @@ import { phoneRegex } from '../../utils/commRegex'
 import {
   sendValidateCode,
   checkValidateCode,
-  bingdingPhone,
-  findEmployeeById,
-  findOrganizationByIdOrNo
 } from '../../services/index'
 import * as Actions from '../../actions/user'
-import { User, UserAction, BindingPhoneParam } from '../../types/user'
-import { params } from '../../core/request/middlewares';
+import { User, UserAction, BindingPhoneParam, findEmployeeByIdParam, findOrganizationByIdOrNoParam } from '../../types/user'
+import { RoleType, ClerkStatuType, StoreStatuType } from '../../constants/index'
 
-console.log(111)
 
 interface ComponentOwnProps {
   user: User
@@ -22,8 +18,9 @@ interface ComponentOwnProps {
 
 }
 type ComponentDispatch = {
-  saveUser: (user: User) => Actions.SaveUserAction,
-  bindingPhone: (params: BindingPhoneParam) => Promise<User>
+  bindingPhone: (params: BindingPhoneParam) => Promise<User>,
+  findEmployeeById: (params: findEmployeeByIdParam) => Promise<User>,
+  findOrganizationByIdOrNo: (params: findOrganizationByIdOrNoParam) => Promise<User>,
 }
 
 type ComponentStateProps = {
@@ -49,14 +46,6 @@ class Home extends Component<ComponentProps, ComponentStateProps> {
       disabledBtn: false,
       count: 0
     }
-  }
-  public saveUser = () => {
-    const { saveUser } = this.props;
-
-    saveUser({
-      memberName: 'new one',
-      role: []
-    })
   }
 
   public sendValidateCode = () => {
@@ -136,7 +125,7 @@ class Home extends Component<ComponentProps, ComponentStateProps> {
       })
       return
     }
-    const { bindingPhone } = this.props;
+    const { bindingPhone, findEmployeeById, findOrganizationByIdOrNo } = this.props;
     checkValidateCode({
       taskId: 7,
       phone: this.phone!.value,  //手机号
@@ -148,38 +137,43 @@ class Home extends Component<ComponentProps, ComponentStateProps> {
         sourceFrom: '钙世英雄小程序'
       }).then((res) => (
         findEmployeeById({ memberId: res.memberId || 0 })
-          ).then((res) => {
-            switch (res.status) {
-              case 0:
-                alert('该账户未激活');
-                break
-              case 1:
-                return findOrganizationByIdOrNo({
-                  orgNo: res.orgNo
-                }).then((res) => {
-                  switch (res.status) {
-                    case -1:
-                    case 1:
-                    case 2:
-                    alert('门店已停用');
-                    break;
-                  }
-                })
-              case 2:
-                alert('该账户已停用');
-                break
-              case 3:
-                alert('该账户已作废');
-                break
+      ).then((res) => {
+        switch (res.status) {
+          case ClerkStatuType.NonActive:
+            alert('该账户未激活')
+            break
+          case ClerkStatuType.Normol:
+            if (res.roles!.some((item) => item === RoleType.Member)) {
+              history.replace('/role')
+              return {}
+            } else {
+              return findOrganizationByIdOrNo({
+                orgNo: res.orgNo || ''
+              }).then((res) => {
+                switch (res.orgStatus) {
+                  case StoreStatuType.Normol:
+                    break
+                  default:
+                    alert('门店已停用')
+                    break
+                }
+              })
             }
+          case ClerkStatuType.Frozen:
+            alert('该账户已停用')
+            break
+          case ClerkStatuType.Deny:
+            alert('该账户已作废')
+            break
+        }
         return {}
-        }).catch((err) => {
-          alert('出错了')
-        })
+      }).catch((err) => {
+        alert('出错了')
+      })
       ).catch((err) => {
         alert('出错了')
       }))
-      )
+    )
       .catch((err) => {
         this.setState({
           phoneError: '',
@@ -189,44 +183,43 @@ class Home extends Component<ComponentProps, ComponentStateProps> {
   }
 
   render() {
-    const { user } = this.props;
-    const { phoneError, valiError, count } = this.state;
+    const { user } = this.props
+    const { isSign, memberName, orgName, orgNo } = user
+    const { phoneError, valiError, count } = this.state
     return (<div className={s.root}>
-      {/* <div className={s.fieldset}>
+      {isSign ? <div className={s.fieldset}>
         <div className={s.label}>姓名</div>
         <div className={s.inputBox}>
-          <input className={s.input} placeholder="请填写您的姓名" />
+          <input className={s.input} placeholder="请填写您的姓名" value={memberName} readOnly />
         </div>
-      </div>
-      <div className={s.fieldset}>
+      </div> : null}
+      {isSign ? <div className={s.fieldset}>
         <div className={s.label}>门店名称</div>
         <div className={s.inputBox}>
-          <div className={s.inputStyle}><input className={s.innerInput} placeholder="请填写门店名称" /><button className={s.queryBtn}>查询</button></div>
-          <div className={s.info}>查询结果：您当前绑定门店为<span className={s.underline}>广州天河店</span></div>
+          <div className={s.inputStyle}><input className={s.innerInput} placeholder="请填写门店名称" value={orgNo} readOnly /><button disabled className={s.queryBtn}>查询</button></div>
+          <div className={s.info}>查询结果：您当前绑定门店为<span className={s.underline}>{orgName}</span></div>
         </div>
-      </div> */}
+      </div> : null}
       <div className={s.fieldset}>
         <div className={s.label}>手机号</div>
         <div className={s.valicodeBox}>
-          <div className={s.inputStyle}><input onChange={this.onPhoneChange} ref={(ref) => (this.phone = ref)} maxLength={11} type="tel" className={s.innerInput} placeholder="请输入手机号" /></div>
+          <div className={s.inputStyle}><input onChange={this.onPhoneChange} readOnly={isSign} ref={(ref) => (this.phone = ref)} maxLength={11} type="tel" className={s.innerInput} placeholder="请输入手机号" /></div>
           <div className={s.info}>{phoneError}</div>
         </div>
-        <div className={s.inputBox}>
+        {isSign ? null : <div className={s.inputBox}>
           <div className={s.inputStyle}><input onChange={this.onValicodeChange} className={s.innerInput} placeholder="请输入验证码" ref={(ref) => (this.valicode = ref)} /><button onClick={this.sendValidateCode} className={s.queryBtn}>{count ? `${count}秒后获取` : '获取验证码'}</button></div>
           <div className={s.info} >{valiError}</div>
-        </div>
+        </div>}
       </div>
-      <div className={s.fieldset}>
+      {isSign ? null : <div className={s.fieldset}>
         <button className={s.confirmBtn} onClick={this.onConfirm}>确定</button>
-      </div>
+      </div>}
     </div>)
   }
 }
 
 export default connect(({ user }) => ({ user }), (dispatch: UserAction) => ({
-  saveUser: (user: User) => {
-    return dispatch(Actions.saveUserAction(user))
-  },
-  bindingPhone: (params: BindingPhoneParam) => (dispatch(Actions.bingdingPhoneAction(params)))
-
+  bindingPhone: (params: BindingPhoneParam) => (dispatch(Actions.bingdingPhoneAction(params))),
+  findEmployeeById: (params: findEmployeeByIdParam) => (dispatch(Actions.findEmployeeByIdAction(params))),
+  findOrganizationByIdOrNo: (params: findOrganizationByIdOrNoParam) => (dispatch(Actions.findOrganizationByIdOrNoAction(params))),
 }))(Home);

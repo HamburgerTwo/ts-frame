@@ -21,7 +21,10 @@ export default [
   },
   {
     context: '/scrm',
-    target: 'http://yyj-test.by-health.com',
+    target: 'http://192.168.114.215:3000',
+    pathRewrite:{
+      '/scrm':'/mock/236/scrm'
+    },
     changeOrigin: true,
   },
 ] as ProxyConfig[];

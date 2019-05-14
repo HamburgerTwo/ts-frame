@@ -13,7 +13,7 @@ export default rootReducer;
 
 export const initialStore = {
   user :{
-    role: [],
+    roles: [],
     memberName: 'test'
   }
 }

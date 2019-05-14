@@ -1,5 +1,9 @@
 import request from '../core/request'
-import { BindingPhoneParam } from '../types/user'
+import { BindingPhoneParam,
+    findEmployeeByIdParam,
+    findOrganizationByIdOrNoParam,
+    bindEmployeeRoleParam
+ } from '../types/user'
 
 type CodeParam = {
     "taskId": number,  //任务ID  6:推送语音验证码  7:发送手机验证码  11：福利卡验证码
@@ -26,26 +30,27 @@ export const bingdingPhone = (params: BindingPhoneParam) => (
     request.get<{
         "memberId": number,
         "authToken": string,
-    }>('/scrmv2/service/applet/bingdingPhone', { params })
+    }>('/scrm/service/applet/bingdingPhone', { params })
 )
 
-type findEmployeeByIdParam = {
-    memberId: number
-}
+
 export const findEmployeeById = (params: findEmployeeByIdParam) => (
     request.get<{
         "orgNo": string, //机构编号 (门店编号)
         "roles": Array<number>,
         "status": number, //店员状态 0：未激活 , 1：正常，2：停用 3：作废
-    }>('/employee/findEmployeeById', { params })
+        "memberName": string,
+    }>('/scrm/employee/findEmployeeById', { params })
 )
 
-type findOrganizationByIdOrNoParam = {
-    orgNo: string
-}
+
 export const findOrganizationByIdOrNo = (params: findOrganizationByIdOrNoParam) => (
     request.get<{
         "orgName": string, //机构编号 (门店编号)
         "status": number, //状态：0 正常
-    }>('/employee/findEmployeeById', { params })
+    }>('/scrm/organization/findOrganizationByIdOrNo', { params })
 )
+
+export const bindEmployeeRole = (param: bindEmployeeRoleParam) => {
+
+}

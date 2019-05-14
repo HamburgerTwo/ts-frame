@@ -1,46 +1,29 @@
-import React, { Component, ComponentClass } from 'react';
+import React, { Component } from 'react';
 import s from './index.scss';
 import { connect } from 'react-redux';
-import { ThunkDispatch } from 'redux-thunk'
-import * as Actions from '../../actions/user'
-import { User, UserAction } from '../../types/user'
-
+import history from '../../core/history'
+import { RoleType } from '../../constants';
 interface ComponentOwnProps {
-  user: User
-
-
 }
 type ComponentDispatch = {
-  saveUser: (user: User) => Actions.SaveUserAction
 }
 
 type ComponentProps = ComponentOwnProps & ComponentDispatch;
 
 
-class Home extends Component<ComponentProps, {}> {
+class Role extends Component<ComponentProps, {}> {
   constructor(props: ComponentProps) {
     super(props)
   }
-  public saveUser = () => {
-    const { saveUser } = this.props;
-    saveUser({
-      memberName: 'new one',
-      role: []
-    })
+  public onSelectRole = (role: RoleType) => () => {
+    history.push(`/store?role=${role}`)
   }
   render() {
-    const { user } = this.props;
-    return (<div className={s.root} onClick={this.saveUser}>
-      <div className={s.shopowner}></div>
-      <div className={s.clerk}></div>
+    return (<div className={s.root}>
+      <div className={s.shopowner} onClick={this.onSelectRole(RoleType.Shopowner)}></div>
+      <div className={s.clerk} onClick={this.onSelectRole(RoleType.Clerk)}></div>
     </div>)
   }
 }
 
-export default connect(({ user }) => ({ user }), (dispatch: UserAction) => ({
-  saveUser: (user: User) => {
-
-    return dispatch(Actions.saveUserAction(user))
-  }
-
-}))(Home);
+export default Role;
