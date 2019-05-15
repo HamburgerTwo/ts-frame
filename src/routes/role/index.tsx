@@ -3,7 +3,11 @@ import s from './index.scss';
 import { connect } from 'react-redux';
 import history from '../../core/history'
 import { RoleType } from '../../constants';
+import { User } from '../../types/user'
+import { Comm } from '../../types/comm'
 interface ComponentOwnProps {
+  user: User,
+  comm: Comm
 }
 type ComponentDispatch = {
 }
@@ -14,6 +18,11 @@ type ComponentProps = ComponentOwnProps & ComponentDispatch;
 class Role extends Component<ComponentProps, {}> {
   constructor(props: ComponentProps) {
     super(props)
+    const { user, comm } = props
+    const { isSign } = user
+    if (isSign) {
+      history.replace(comm.url)
+    }
   }
   public onSelectRole = (role: RoleType) => () => {
     history.push(`/store?role=${role}`)
@@ -26,4 +35,4 @@ class Role extends Component<ComponentProps, {}> {
   }
 }
 
-export default Role;
+export default connect(({ user, comm }) => ({ user, comm }))(Role);

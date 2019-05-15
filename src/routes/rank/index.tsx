@@ -1,16 +1,13 @@
 import React, { Component, ComponentClass } from 'react';
 import s from './index.scss';
-import { connect } from 'react-redux';
-import { ThunkDispatch } from 'redux-thunk'
 import classNames from 'classnames';
-import * as Actions from '../../actions/user'
 import PullToRefresh from 'rmc-pull-updown-to-refresh';
 import { getPointRand } from '../../services/rank'
 interface ComponentOwnProps {
   pageNum: Number
-
 }
 type ComponentDispatch = {
+  
 }
 
 type ComponentStateProps = {

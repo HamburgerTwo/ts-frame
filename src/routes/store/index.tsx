@@ -4,15 +4,18 @@ import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from "react-router"
 import { ThunkDispatch } from 'redux-thunk'
 import * as Actions from '../../actions/user'
-import { User, UserAction } from '../../types/user'
-import { findOrganizationByIdOrNo } from '../../services/index'
-import { StoreStatuType } from '../../constants'
+import { User, UserAction, findOrganizationByIdOrNoParam, updateEmployeeParam } from '../../types/user'
+import { Comm } from '../../types/comm'
+import { bindEmployeeRole } from '../../services/index'
+import { StoreStatuType, RoleType } from '../../constants'
 import { parse } from 'query-string'
 interface ComponentOwnProps {
-  user: User
+  user: User,
+  comm: Comm
 }
 type ComponentDispatch = {
-  saveUser: (user: User) => Actions.SaveUserAction
+  findOrganizationByIdOrNo: (params: findOrganizationByIdOrNoParam) => Promise<User>,
+  updateEmployee:  (params: updateEmployeeParam) => Promise<User>,
 }
 
 type ComponentProps = ComponentOwnProps & ComponentDispatch & RouteComponentProps;
@@ -21,7 +24,7 @@ type ComponentStateProps = {
   nameError: string,
   storeTip: string,
   storeName: string,
- 
+
 }
 interface Store {
   name: HTMLInputElement | null,
@@ -30,7 +33,7 @@ interface Store {
 }
 
 class Store extends Component<ComponentProps, ComponentStateProps> {
-  
+
   constructor(props: ComponentProps) {
     super(props)
     this.state = {
@@ -40,13 +43,7 @@ class Store extends Component<ComponentProps, ComponentStateProps> {
     }
     this.queryNo = ''
   }
-  public saveUser = () => {
-    const { saveUser } = this.props;
-    saveUser({
-      memberName: 'new one',
-      roles: []
-    })
-  }
+ 
   public queryStore = () => {
     if (!this.storeNo!.value) {
       this.setState({
@@ -54,13 +51,14 @@ class Store extends Component<ComponentProps, ComponentStateProps> {
       })
       return
     }
+    const { findOrganizationByIdOrNo } = this.props;
     findOrganizationByIdOrNo({
       orgNo: this.storeNo!.value
     }).then((res) => {
-      if (res.status === StoreStatuType.Normol) {
+      if (res.orgStatus === StoreStatuType.Normol) {
         this.setState({
           storeTip: '查询结果：您当前绑定门店为',
-          storeName: res.orgName
+          storeName: res.orgName || ''
         })
         this.queryNo = this.storeNo!.value
       } else {
@@ -90,14 +88,36 @@ class Store extends Component<ComponentProps, ComponentStateProps> {
         nameError: '请输入姓名',
       })
     }
-    if (!this.queryNo){
+    if (!this.queryNo) {
       this.setState({
         storeTip: '请输入需要绑定的门店编号',
         storeName: ''
       })
     }
+    const { user, updateEmployee, history, comm } = this.props
+    const { memberId = 0 } = user;
     const queryObj = parse(this.props.location.search)
-    console.log(queryObj)
+    Promise.resolve().then(() => {
+      if (queryObj.role === RoleType.Shopowner.toString()) {
+        return bindEmployeeRole({
+          orgNo: this.queryNo,
+          memberName: this.name!.value,
+          roleType: RoleType.Shopowner,
+          memberId
+        })
+      }
+      return {}
+    }).then(() => updateEmployee({
+      orgNo: this.queryNo,
+      memberName: this.name!.value,
+      roles:[RoleType.Clerk],
+      memberId
+    })).then(() => {
+      
+      history.replace(comm.url)
+    }).catch((err) => {
+      alert(err.errorMsg || '出错了')
+    })
   }
   render() {
     const { user } = this.props;
@@ -124,10 +144,7 @@ class Store extends Component<ComponentProps, ComponentStateProps> {
   }
 }
 
-export default withRouter(connect(({ user }) => ({ user }), (dispatch: UserAction) => ({
-  saveUser: (user: User) => {
-
-    return dispatch(Actions.saveUserAction(user))
-  }
-
+export default withRouter(connect(({ user, comm }) => ({ user, comm }), (dispatch: UserAction) => ({
+  findOrganizationByIdOrNo: (params: findOrganizationByIdOrNoParam) => dispatch(Actions.findOrganizationByIdOrNoAction(params)),
+  updateEmployee: (params: updateEmployeeParam) => dispatch(Actions.updateEmployeeAction(params))
 }))(Store));

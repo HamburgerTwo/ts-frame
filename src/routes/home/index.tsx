@@ -21,6 +21,7 @@ type ComponentDispatch = {
   bindingPhone: (params: BindingPhoneParam) => Promise<User>,
   findEmployeeById: (params: findEmployeeByIdParam) => Promise<User>,
   findOrganizationByIdOrNo: (params: findOrganizationByIdOrNoParam) => Promise<User>,
+  signAction: () => Promise<User>
 }
 
 type ComponentStateProps = {
@@ -125,7 +126,7 @@ class Home extends Component<ComponentProps, ComponentStateProps> {
       })
       return
     }
-    const { bindingPhone, findEmployeeById, findOrganizationByIdOrNo } = this.props;
+    const { bindingPhone, findEmployeeById, findOrganizationByIdOrNo, signAction } = this.props;
     checkValidateCode({
       taskId: 7,
       phone: this.phone!.value,  //手机号
@@ -137,37 +138,7 @@ class Home extends Component<ComponentProps, ComponentStateProps> {
         sourceFrom: '钙世英雄小程序'
       }).then((res) => (
         findEmployeeById({ memberId: res.memberId || 0 })
-      ).then((res) => {
-        switch (res.status) {
-          case ClerkStatuType.NonActive:
-            alert('该账户未激活')
-            break
-          case ClerkStatuType.Normol:
-            if (res.roles!.some((item) => item === RoleType.Member)) {
-              history.replace('/role')
-              return {}
-            } else {
-              return findOrganizationByIdOrNo({
-                orgNo: res.orgNo || ''
-              }).then((res) => {
-                switch (res.orgStatus) {
-                  case StoreStatuType.Normol:
-                    break
-                  default:
-                    alert('门店已停用')
-                    break
-                }
-              })
-            }
-          case ClerkStatuType.Frozen:
-            alert('该账户已停用')
-            break
-          case ClerkStatuType.Deny:
-            alert('该账户已作废')
-            break
-        }
-        return {}
-      }).catch((err) => {
+      ).catch((err) => {
         alert('出错了')
       })
       ).catch((err) => {
@@ -184,7 +155,7 @@ class Home extends Component<ComponentProps, ComponentStateProps> {
 
   render() {
     const { user } = this.props
-    const { isSign, memberName, orgName, orgNo } = user
+    const { isSign, memberName, orgName, orgNo, phone } = user
     const { phoneError, valiError, count } = this.state
     return (<div className={s.root}>
       {isSign ? <div className={s.fieldset}>
@@ -203,7 +174,7 @@ class Home extends Component<ComponentProps, ComponentStateProps> {
       <div className={s.fieldset}>
         <div className={s.label}>手机号</div>
         <div className={s.valicodeBox}>
-          <div className={s.inputStyle}><input onChange={this.onPhoneChange} readOnly={isSign} ref={(ref) => (this.phone = ref)} maxLength={11} type="tel" className={s.innerInput} placeholder="请输入手机号" /></div>
+          <div className={s.inputStyle}><input onChange={this.onPhoneChange} readOnly={isSign} value={phone} ref={(ref) => (this.phone = ref)} maxLength={11} type="tel" className={s.innerInput} placeholder="请输入手机号" /></div>
           <div className={s.info}>{phoneError}</div>
         </div>
         {isSign ? null : <div className={s.inputBox}>
@@ -222,4 +193,5 @@ export default connect(({ user }) => ({ user }), (dispatch: UserAction) => ({
   bindingPhone: (params: BindingPhoneParam) => (dispatch(Actions.bingdingPhoneAction(params))),
   findEmployeeById: (params: findEmployeeByIdParam) => (dispatch(Actions.findEmployeeByIdAction(params))),
   findOrganizationByIdOrNo: (params: findOrganizationByIdOrNoParam) => (dispatch(Actions.findOrganizationByIdOrNoAction(params))),
+  signAction: () => (dispatch(Actions.signAction)),
 }))(Home);

@@ -6,7 +6,7 @@ const inst = new Request(
     baseUrl: process.env.REACT_APP_API_BASE,
     type: 'json',
   },
-  [middlewares.timeout, middlewares.http, middlewares.json, middlewares.baseUrl, middlewares.params, middlewares.type],
+  [middlewares.timeout, middlewares.http, middlewares.json, middlewares.baseUrl, middlewares.authToken, middlewares.params, middlewares.type],
 );
 
 export default inst;
