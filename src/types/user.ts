@@ -10,7 +10,8 @@ export interface User {
   orgNo?: string,
   orgStatus?: number,
   orgName?: string,
-  isSign?: boolean
+  isSign?: boolean,
+  openId?: string
 }
 
 
@@ -51,4 +52,8 @@ export type updateEmployeeParam = {
 export type loginByWechatUserParam = {
   openid: string,
   accountType: string
+}
+
+export type saveOpenIdParam = {
+  openId: string
 }

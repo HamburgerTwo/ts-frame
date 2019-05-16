@@ -126,17 +126,18 @@ class Home extends Component<ComponentProps, ComponentStateProps> {
       })
       return
     }
-    const { bindingPhone, findEmployeeById, findOrganizationByIdOrNo, signAction } = this.props;
+    const { bindingPhone, findEmployeeById, findOrganizationByIdOrNo, signAction, user } = this.props;
+    const { openId = '' } = user
     checkValidateCode({
       taskId: 7,
       phone: this.phone!.value,  //手机号
       validateCode: this.valicode!.value
     }).then((res) =>
       (bindingPhone({
-        openId: '1',
+        openId,
         phone: this.phone!.value,
         sourceFrom: '钙世英雄小程序',
-        identityType: 'ACCOUNT_TYPE' 
+        identityType: ACCOUNT_TYPE 
       }).then((res) => (
         findEmployeeById({ memberId: res.memberId || 0 })
       ).catch((err) => {

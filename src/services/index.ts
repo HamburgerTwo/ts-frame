@@ -43,6 +43,7 @@ export const findEmployeeById = (params: findEmployeeByIdParam) => (
         roles: Array<number>,
         status: number, //店员状态 0：未激活 , 1：正常，2：停用 3：作废
         memberName: string,
+        mobilePhone: string,
     }>('/scrm/employee/findEmployeeById', { params })
 )
 
@@ -70,6 +71,7 @@ export const loginByWechatUser = (param: loginByWechatUserParam) => (
     request.post<
         {
             memberId: number,
-            authToken: string
+            authToken: string,
+            mobilePhone: string,
         }>('/scrm/auth/employee/loginByWechatUser', param)
 )

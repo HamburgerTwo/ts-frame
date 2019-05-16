@@ -1,5 +1,5 @@
 import { User } from '../types/user';
-import { BINDINDPHONE_ACTION, FINDEMPLOEEBYID_ACTION, FINDORGANIZATIONBYIDORNO_ACTION,UPDATEEMPLOYEE_ACTION,SIGN_ACTION } from '../constants'
+import { BINDINDPHONE_ACTION, FINDEMPLOEEBYID_ACTION, FINDORGANIZATIONBYIDORNO_ACTION,UPDATEEMPLOYEE_ACTION,SIGN_ACTION, SAVEOPENID_ACTION } from '../constants'
 import { Reducer } from 'redux'
 const initialUser:User = {
   roles: [],
@@ -9,6 +9,7 @@ const initialUser:User = {
   isSign: false
 }
 const user:Reducer<User> = (initialState: User = initialUser, action): User => {
+  console.log(action)
   switch (action.type) {
     
     case BINDINDPHONE_ACTION: {
@@ -28,6 +29,10 @@ const user:Reducer<User> = (initialState: User = initialUser, action): User => {
       break;
     }
     case SIGN_ACTION: {
+      return { ...initialState, ...action.payload }
+      break;
+    }
+    case SAVEOPENID_ACTION: {
       return { ...initialState, ...action.payload }
       break;
     }

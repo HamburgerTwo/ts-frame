@@ -5,6 +5,7 @@ import {
   UPDATEEMPLOYEE_ACTION,
   SIGN_ACTION,
   LOGINBYWECHATUSER_ACTION,
+  SAVEOPENID_ACTION,
   RoleType, ClerkStatuType, StoreStatuType,
   GOTOURL_ACTION
 } from '../constants'
@@ -15,7 +16,8 @@ import {
   findEmployeeByIdParam,
   findOrganizationByIdOrNoParam,
   updateEmployeeParam,
-  loginByWechatUserParam
+  loginByWechatUserParam,
+  saveOpenIdParam
 } from '../types/user';
 
 import { CommAction } from '../types/comm'
@@ -60,7 +62,18 @@ export interface LoginByWechatUserAction extends AnyAction {
   type: LOGINBYWECHATUSER_ACTION
   payload: User
 }
-export type UserActions = BingdingPhoneAction | FindEmployeeByIdAction | FindOrganizationByIdOrNoAction | UpdateEmployeeAction | SignAction | LoginByWechatUserAction
+
+export interface SaveOpenIdAction extends AnyAction {
+  type: SAVEOPENID_ACTION
+  payload: User
+}
+export type UserActions = BingdingPhoneAction
+ | FindEmployeeByIdAction 
+ | FindOrganizationByIdOrNoAction 
+ | UpdateEmployeeAction 
+ | SignAction 
+ | LoginByWechatUserAction
+ | SaveOpenIdAction
 
 function handleRes(res: UserActions) {
   return res.payload
@@ -87,7 +100,8 @@ export const findEmployeeByIdAction = (params: findEmployeeByIdParam) => (dispat
         roles: res.roles,
         orgNo: res.orgNo,
         status: res.status,
-        memberName: res.memberName
+        memberName: res.memberName,
+        phone: res.mobilePhone
       }
     })
   )).then(handleRes).then((res) => {
@@ -110,10 +124,10 @@ export const findEmployeeByIdAction = (params: findEmployeeByIdParam) => (dispat
           history.replace('/role')
           return {}
         } else {
-          return findOrganizationByIdOrNo({
+          return dispatch(findOrganizationByIdOrNoAction({
             orgNo: res.orgNo || ''
-          }).then<User>((res) => {
-            switch (res.status) {
+          })).then<User>((res) => {
+            switch (res.orgStatus) {
               case StoreStatuType.Normol:
                 return dispatch(signAction)
               default:
@@ -175,10 +189,19 @@ export const loginByWechatUserAction = (params: loginByWechatUserParam) => (disp
     return dispatch({
       type: SIGN_ACTION,
       payload: {
-        memberId: res.memberId
+        memberId: res.memberId,
+        phone: res.mobilePhone
       }
     })
   }
   ).then(handleRes)
 )
 
+export const saveOpenIdAction = (params: saveOpenIdParam) => (dispatch: UserAction) => (
+  Promise.resolve().then(() => dispatch({
+      type: SAVEOPENID_ACTION,
+      payload: {
+        openId: params.openId
+      }
+    })
+  )).then(handleRes)

@@ -116,7 +116,8 @@ class Store extends Component<ComponentProps, ComponentStateProps> {
       
       history.replace(comm.url)
     }).catch((err) => {
-      alert(err.errorMsg || '出错了')
+      
+      alert(err.message || '出错了')
     })
   }
   render() {

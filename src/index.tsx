@@ -12,10 +12,13 @@ import { User } from './types/user'
 import { GOTOURL_ACTION } from './constants/index'
 const store = configureStore(history);
 const queryObj = parse(window.location.search)
-store.dispatch<any>(Actions.loginByWechatUserAction({
-  openid: queryObj.openid,
+store.dispatch<any>(Actions.saveOpenIdAction({
+  openId: queryObj.openid
+})).then((res: User) => (store.dispatch<any>(Actions.loginByWechatUserAction({
+  openid: res.openId || '',
   accountType: ACCOUNT_TYPE
-})).then((res: User) => (res.memberId ? store.dispatch<any>(Actions.findEmployeeByIdAction({
+}))))
+.then((res: User) => (res.memberId ? store.dispatch<any>(Actions.findEmployeeByIdAction({
   memberId: res.memberId || 0
 })) : {})).catch((err: any) => {
   if (location.hash === '#/rank') {
