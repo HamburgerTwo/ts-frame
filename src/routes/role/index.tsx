@@ -14,7 +14,6 @@ type ComponentDispatch = {
 
 type ComponentProps = ComponentOwnProps & ComponentDispatch;
 
-
 class Role extends Component<ComponentProps, {}> {
   constructor(props: ComponentProps) {
     super(props)

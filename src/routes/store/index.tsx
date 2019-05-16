@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import s from './index.scss';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from "react-router"
-import { ThunkDispatch } from 'redux-thunk'
 import * as Actions from '../../actions/user'
 import { User, UserAction, findOrganizationByIdOrNoParam, updateEmployeeParam } from '../../types/user'
 import { Comm } from '../../types/comm'

@@ -1,4 +1,4 @@
-import React, { Component, ComponentClass } from 'react';
+import React, { Component } from 'react';
 import s from './index.scss';
 import classNames from 'classnames';
 import PullToRefresh from 'rmc-pull-updown-to-refresh';

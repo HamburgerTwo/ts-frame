@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import s from './index.scss'
 import { connect } from 'react-redux'
-import history from '../../core/history'
 import { phoneRegex } from '../../utils/commRegex'
 import {
   sendValidateCode,
@@ -126,7 +125,7 @@ class Home extends Component<ComponentProps, ComponentStateProps> {
       })
       return
     }
-    const { bindingPhone, findEmployeeById, findOrganizationByIdOrNo, signAction, user } = this.props;
+    const { bindingPhone, findEmployeeById, user } = this.props;
     const { openId = '' } = user
     checkValidateCode({
       taskId: 7,
