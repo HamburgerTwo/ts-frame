@@ -12,11 +12,11 @@ type ComponentDispatch = {
 
 type ComponentStateProps = {
   list: Array<{
-    "rank": number,
-    "clerkId": number,
-    "memberName": string,
-    "orgName": string,
-    "p2name": string,
+    rank: number,
+    memberName: string,
+    orgName: string,
+    districtName: string,
+    chainName: string,
     points: number
   }>,
   hasmore: boolean
@@ -88,7 +88,7 @@ class Rank extends Component<ComponentProps, ComponentStateProps> {
           >
             <table className={s.table}>
               <tbody>
-                {this.state.list.map((item, index) => (<tr className={classNames({
+                {this.state.list.map((item, index) => (<tr key={item.rank} className={classNames({
                   [s.no1]: index === 0,
                   [s.no2]: index === 1,
                   [s.no3]: index === 2,
@@ -96,8 +96,8 @@ class Rank extends Component<ComponentProps, ComponentStateProps> {
                 }, s.row)}>
                   <td className={s.col1}>{index < 3 ? '' : index + 1}</td>
                   <td className={s.col2}>{item.memberName}</td>
-                  <td className={s.col3}>{item.p2name}</td>
-                  <td className={s.col4}>{item.orgName}</td>
+                  <td className={s.col3}>{item.districtName}</td>
+                  <td className={s.col4}>{item.chainName}</td>
                   <td className={s.col5}>{item.points}</td>
                 </tr>))}
               </tbody>

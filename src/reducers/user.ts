@@ -3,15 +3,13 @@ import { BINDINDPHONE_ACTION, FINDEMPLOEEBYID_ACTION, FINDORGANIZATIONBYIDORNO_A
 import { Reducer } from 'redux'
 const initialUser:User = {
   roles: [],
-  memberName: 'test',
+  memberName: '',
   phone: '',
   memberId: 0,
   isSign: false
 }
 const user:Reducer<User> = (initialState: User = initialUser, action): User => {
-  console.log(action)
   switch (action.type) {
-    
     case BINDINDPHONE_ACTION: {
       return { ...initialState, ...action.payload }
       break;
