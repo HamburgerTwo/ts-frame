@@ -10,6 +10,8 @@ import configureStore from './store/configureStore';
 import * as Actions from './actions/user'
 import { User } from './types/user'
 import { GOTOURL_ACTION } from './constants/index'
+import App from './components/App'
+
 const store = configureStore(history);
 const queryObj = parse(window.location.search)
 store.dispatch<any>(Actions.saveOpenIdAction({
@@ -36,7 +38,7 @@ store.dispatch<any>(Actions.saveOpenIdAction({
 }).catch((err: any) => {
   console.log(err)
 })
-import App from './components/App'
+
 
 if (__DEV__) {
   console.info('development');

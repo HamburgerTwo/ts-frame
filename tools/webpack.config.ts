@@ -50,7 +50,7 @@ const webpackConfig: webpack.Configuration = {
         loader: 'ts-loader',
         options: {
           compilerOptions: {
-            module: 'es2015',
+            module: 'esNext',
           },
         },
       },

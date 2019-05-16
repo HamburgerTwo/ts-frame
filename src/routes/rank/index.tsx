@@ -65,7 +65,7 @@ class Rank extends Component<ComponentProps, ComponentStateProps> {
 
     return (<div className={s.root}>
       <div className={s.rank}>
-        <div className={s.cup}>XX排行榜</div>
+        <div className={s.cup}>钙世英雄排行榜</div>
         <div className={s.title}>数据截止：昨天</div>
         <table className={s.table}>
           <thead>
