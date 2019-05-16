@@ -15,16 +15,9 @@ interface ProxyConfig extends Config {
 export default [
   // Example:
   {
-    context: '/yygj',
-    target: 'http://192.168.103.53:10555',
-    changeOrigin: true,
-  },
-  {
     context: '/scrm',
-    target: 'http://192.168.114.215:3000',
-    pathRewrite:{
-      '/scrm':'/mock/236/scrm'
-    },
+    target: 'http://wx-test1.by-health.com',
+   
     changeOrigin: true,
   },
 ] as ProxyConfig[];

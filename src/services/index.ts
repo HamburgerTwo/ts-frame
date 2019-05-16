@@ -33,7 +33,7 @@ export const bingdingPhone = (params: BindingPhoneParam) => (
     request.get<{
         memberId: number,
         authToken: string,
-    }>('/scrm/service/applet/bingdingPhone', { params })
+    }>('/scrm/yygj/service/applet/bingdingPhone', { params })
 )
 
 

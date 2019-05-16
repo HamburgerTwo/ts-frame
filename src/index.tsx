@@ -8,7 +8,7 @@ import { parse } from 'query-string'
 import { ACCOUNT_TYPE } from './constants'
 import configureStore from './store/configureStore';
 import * as Actions from './actions/user'
-import { User, UserAction } from './types/user'
+import { User } from './types/user'
 import { GOTOURL_ACTION } from './constants/index'
 const store = configureStore(history);
 const queryObj = parse(window.location.search)
@@ -17,11 +17,7 @@ store.dispatch<any>(Actions.loginByWechatUserAction({
   accountType: ACCOUNT_TYPE
 })).then((res: User) => (res.memberId ? store.dispatch<any>(Actions.findEmployeeByIdAction({
   memberId: res.memberId || 0
-})) : {})).then(() => {
-  const root = document.getElementById('app');
-  Reactdom.render(<App store={store} />, root)
-}).catch((err: any) => {
-  console.log(err)
+})) : {})).catch((err: any) => {
   if (location.hash === '#/rank') {
     store.dispatch({
       type: GOTOURL_ACTION,
@@ -31,6 +27,11 @@ store.dispatch<any>(Actions.loginByWechatUserAction({
     })
   }
   history.replace('/')
+}).then(() => {
+  const root = document.getElementById('app');
+  Reactdom.render(<App store={store} />, root)
+}).catch((err: any) => {
+  console.log(err)
 })
 import App from './components/App'
 

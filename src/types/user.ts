@@ -21,7 +21,8 @@ export type UserAction = ThunkDispatch<{
 export type BindingPhoneParam = {
   openId: string,
   phone: string
-  sourceFrom: string
+  sourceFrom: string,
+  identityType: string
 }
 
 export type findEmployeeByIdParam = {

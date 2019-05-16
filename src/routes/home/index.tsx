@@ -9,7 +9,7 @@ import {
 } from '../../services/index'
 import * as Actions from '../../actions/user'
 import { User, UserAction, BindingPhoneParam, findEmployeeByIdParam, findOrganizationByIdOrNoParam } from '../../types/user'
-import { RoleType, ClerkStatuType, StoreStatuType } from '../../constants/index'
+import { ACCOUNT_TYPE } from '../../constants/index'
 
 
 interface ComponentOwnProps {
@@ -79,11 +79,11 @@ class Home extends Component<ComponentProps, ComponentStateProps> {
         }
       }, 1000)
       sendValidateCode({
-        "taskId": 7,  //任务ID  6:推送语音验证码  7:发送手机验证码  11：福利卡验证码
-        "phone": this.phone!.value,  //手机号
-        "length": 4,  //验证码长度
-        "token": '',  //图片验证码的token  可为空
-        "captext": ''  //
+        taskId: 7,  //任务ID  6:推送语音验证码  7:发送手机验证码  11：福利卡验证码
+        phone: this.phone!.value,  //手机号
+        length: 4,  //验证码长度
+        token: '',  //图片验证码的token  可为空
+        captext: ''  //
       }).catch((err) => {
         clearInterval(this.valicodeInterVal)
         this.setState({
@@ -135,7 +135,8 @@ class Home extends Component<ComponentProps, ComponentStateProps> {
       (bindingPhone({
         openId: '1',
         phone: this.phone!.value,
-        sourceFrom: '钙世英雄小程序'
+        sourceFrom: '钙世英雄小程序',
+        identityType: 'ACCOUNT_TYPE' 
       }).then((res) => (
         findEmployeeById({ memberId: res.memberId || 0 })
       ).catch((err) => {

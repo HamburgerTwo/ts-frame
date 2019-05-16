@@ -67,15 +67,16 @@ function handleRes(res: UserActions) {
 }
 
 export const bingdingPhoneAction = (params: BindingPhoneParam) => (dispatch: UserAction) => (
-  bingdingPhone(params).then((res) => (
-    dispatch({
+  bingdingPhone(params).then((res) => {
+    sessionStorage.setItem('authToken', res.authToken)
+    return dispatch({
       type: BINDINDPHONE_ACTION,
       payload: {
         memberId: res.memberId,
         phone: params.phone
       }
     })
-  )).then(handleRes)
+  }).then(handleRes)
 )
 
 export const findEmployeeByIdAction = (params: findEmployeeByIdParam) => (dispatch: UserAction & CommAction) => (
@@ -95,7 +96,9 @@ export const findEmployeeByIdAction = (params: findEmployeeByIdParam) => (dispat
         alert('该账户未激活')
         throw {}
       case ClerkStatuType.Normol:
+        
         if (res.roles!.some((item) => item === RoleType.Member)) {
+          console.log(location.hash)
           if (location.hash === '#/rank') {
             dispatch({
               type: GOTOURL_ACTION,
