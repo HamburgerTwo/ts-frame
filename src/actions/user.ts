@@ -112,7 +112,6 @@ export const findEmployeeByIdAction = (params: findEmployeeByIdParam) => (dispat
       case ClerkStatuType.Normol:
         
         if (res.roles!.some((item) => item === RoleType.Member)) {
-          console.log(location.hash)
           if (location.hash === '#/rank') {
             dispatch({
               type: GOTOURL_ACTION,
