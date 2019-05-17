@@ -88,13 +88,13 @@ class Rank extends Component<ComponentProps, ComponentStateProps> {
           >
             <table className={s.table}>
               <tbody>
-                {this.state.list.map((item, index) => (<tr key={item.rank} className={classNames({
-                  [s.no1]: index === 0,
-                  [s.no2]: index === 1,
-                  [s.no3]: index === 2,
-                  [s.other]: index > 2
+                {this.state.list.map((item, index) => (<tr key={index} className={classNames({
+                  [s.no1]: item.rank === 1,
+                  [s.no2]: item.rank === 2,
+                  [s.no3]: item.rank === 3,
+                  [s.other]: item.rank > 3
                 }, s.row)}>
-                  <td className={s.col1}>{index < 3 ? '' : index + 1}</td>
+                  <td className={s.col1}>{item.rank < 4 ? '' : item.rank}</td>
                   <td className={s.col2}>{item.memberName}</td>
                   <td className={s.col3}>{item.districtName}</td>
                   <td className={s.col4}>{item.chainName}</td>
