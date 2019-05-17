@@ -140,7 +140,7 @@ class Home extends Component<ComponentProps, ComponentStateProps> {
       }).then((res) => (
         findEmployeeById({ memberId: res.memberId || 0 })
       ).catch((err) => {
-        alert('出错了')
+        console.info(err)
       })
       ).catch((err) => {
         alert('出错了')
