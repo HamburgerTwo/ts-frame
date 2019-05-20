@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "build": "ts-node tools/cli build",
+    "build:prod": "ts-node tools/cli build --env=prod",
     "clean": "ts-node tools/cli clean",
     "start": "ts-node tools/cli start --dev",
     "lint": "yarn run lint:ts && yarn run lint:css",
