@@ -90,7 +90,7 @@ export const timeout: Middleware = (context: Context<{ timeout?: number }>, next
 export const authToken: Middleware = (context: Context, next: NextFunction) => {
   if(sessionStorage.getItem('authToken')) {
     context.headers = context.headers || {};
-    context.headers['authToken'] = sessionStorage.getItem('authToken') || ''
+    context.headers['Authorization'] = `Bearer ${sessionStorage.getItem('authToken')}` || ''
   }
   return next();
 };
