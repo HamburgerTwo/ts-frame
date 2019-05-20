@@ -44,7 +44,7 @@ export function getClientEnvironment() {
     .filter(key => REACT_APP.test(key))
     .reduce(
       (env: Environment, key) => {
-        env[key.replace(REACT_APP, '')] = process.env[key];
+        env[key] = process.env[key];
         return env;
       },
       {

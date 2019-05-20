@@ -7,6 +7,6 @@ export const getPointRand = (pageNum: Number, itemCount: Number) => {
     orgName: string,
     districtName: string,
     chainName: string,
-    points: number
-    }>>('/scrm/yygj/service/getPointsRank', { pageNum, itemCount })
+    points: number,
+    }>>('/yygj/service/getPointsRank', { pageNum, itemCount })
 }

@@ -1,41 +1,39 @@
-import request from '../core/request'
+import request from '../core/request';
 import {
     BindingPhoneParam,
     findEmployeeByIdParam,
     findOrganizationByIdOrNoParam,
     bindEmployeeRoleParam,
     updateEmployeeParam,
-    loginByWechatUserParam
-} from '../types/user'
+    loginByWechatUserParam,
+} from '../types/user';
 
-type CodeParam = {
-    taskId: number,  //任务ID  6:推送语音验证码  7:发送手机验证码  11：福利卡验证码
-    phone: string,  //手机号
-    length: number,  //验证码长度
-    token: string,  //图片验证码的token  可为空
-    captext: string  //图片验证码的字符串  如果token为空，则为空，如果token不为空，则不能为空
+interface CodeParam  {
+    taskId: number;  // 任务ID  6:推送语音验证码  7:发送手机验证码  11：福利卡验证码
+    phone: string;  // 手机号
+    length: number;  // 验证码长度
+    token: string;  // 图片验证码的token  可为空
+    captext: string;  // 图片验证码的字符串  如果token为空，则为空，如果token不为空，则不能为空
 }
 export const sendValidateCode = (param: CodeParam) => (
-    request.post('/scrm/message/sendValidateCode', param)
-)
+    request.post('/message/sendValidateCode', param)
+);
 
-type CheckParam = {
-    taskId: number,  //任务ID  6:推送语音验证码  7:发送手机验证码  11：福利卡验证码
-    phone: string,  //手机号
-    validateCode: string  //验证码
+interface CheckParam {
+    taskId: number;  // 任务ID  6:推送语音验证码  7:发送手机验证码  11：福利卡验证码
+    phone: string;  // 手机号
+    validateCode: string;  // 验证码
 }
 export const checkValidateCode = (param: CheckParam) => (
-    request.post('/scrm/message/checkValidateCode', param)
-)
-
+    request.post('/message/checkValidateCode', param)
+);
 
 export const bingdingPhone = (params: BindingPhoneParam) => (
     request.get<{
         memberId: number,
         authToken: string,
-    }>('/scrm/yygj/service/applet/bingdingPhone', { params })
-)
-
+    }>('/yygj/service/applet/bingdingPhone', { params })
+);
 
 export const findEmployeeById = (params: findEmployeeByIdParam) => (
     request.get<{
@@ -44,28 +42,27 @@ export const findEmployeeById = (params: findEmployeeByIdParam) => (
         status: number, //店员状态 0：未激活 , 1：正常，2：停用 3：作废
         memberName: string,
         mobilePhone: string,
-    }>('/scrm/employee/findEmployeeById', { params })
-)
-
+    }>('/employee/findEmployeeById', { params })
+);
 
 export const findOrganizationByIdOrNo = (params: findOrganizationByIdOrNoParam) => (
     request.get<{
         orgName: string, //机构编号 (门店编号)
         status: number, //状态：0 正常
-    }>('/scrm/organization/findOrganizationByIdOrNo', { params })
-)
+    }>('/organization/findOrganizationByIdOrNo', { params })
+);
 
 export const bindEmployeeRole = (param: bindEmployeeRoleParam) => (
     request.post<{
         status: number, //状态：0 正常
-    }>('/scrm//employee/bindEmployeeRole', param)
-)
+    }>('//employee/bindEmployeeRole', param)
+);
 
 export const updateEmployee = (param: updateEmployeeParam) => (
     request.post<{
         status: number, //状态：0 正常
-    }>('/scrm/employee/updateEmployee', param)
-)
+    }>('/employee/updateEmployee', param)
+);
 
 export const loginByWechatUser = (param: loginByWechatUserParam) => (
     request.post<
@@ -73,5 +70,5 @@ export const loginByWechatUser = (param: loginByWechatUserParam) => (
             memberId: number,
             authToken: string,
             mobilePhone: string,
-        }>('/scrm/auth/employee/loginByWechatUser', param)
-)
+        }>('/auth/employee/loginByWechatUser', param)
+);
