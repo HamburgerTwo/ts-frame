@@ -29,7 +29,7 @@ const webpackConfig: webpack.Configuration = {
     path: paths.BUILD_DIR,
     filename: isDebug ? '[name].js' : '[name].[hash:8].js',
     chunkFilename: isDebug ? 'thunk/[name].js' : 'thunk/[name].[hash:8].js',
-    publicPath: isDebug ? '/' : process.env.PUBLIC_PATH,
+    publicPath: isDebug ? '/' : process.env.PUBLIC_URL,
   },
 
   resolve: {
@@ -50,7 +50,7 @@ const webpackConfig: webpack.Configuration = {
         loader: 'ts-loader',
         options: {
           compilerOptions: {
-            module: 'es2015',
+            module: 'esNext',
           },
         },
       },
@@ -78,9 +78,6 @@ const webpackConfig: webpack.Configuration = {
             options: {
               importLoaders: 1,
               sourceMap: isDebug,
-              // CSS Modules https://github.com/css-modules/css-modules
-              modules: true,
-              localIdentName: isDebug ? '[name]-[local]-[hash:base64:5]' : '[hash:base64:5]',
             },
           },
           // Apply PostCSS plugins including autoprefixer
@@ -156,6 +153,19 @@ const webpackConfig: webpack.Configuration = {
             ],
           },
         },]
+
+      },
+      {
+        test: /\.(jpg|png|jpeg)$/,
+
+        rules:[
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[path][name].[ext]',
+            },
+          },
+          ]
 
       },
     ],

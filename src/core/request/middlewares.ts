@@ -61,7 +61,6 @@ export const json: Middleware = (context: Context<{ json: boolean }>, next: Next
     ? next()
     : next()
         .then<any>(response => response.json())
-        .then(jsonObj => (jsonObj.rc === 1 ? jsonObj.data : Promise.reject(jsonObj)));
 };
 
 export const timeout: Middleware = (context: Context<{ timeout?: number }>, next: NextFunction) => {
@@ -85,5 +84,13 @@ export const timeout: Middleware = (context: Context<{ timeout?: number }>, next
     ]);
   }
 
+  return next();
+};
+
+export const authToken: Middleware = (context: Context, next: NextFunction) => {
+  if(sessionStorage.getItem('authToken')) {
+    context.headers = context.headers || {};
+    context.headers['Authorization'] = `Bearer ${sessionStorage.getItem('authToken')}` || ''
+  }
   return next();
 };

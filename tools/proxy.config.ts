@@ -14,9 +14,10 @@ interface ProxyConfig extends Config {
 // https://github.com/chimurai/http-proxy-middleware
 export default [
   // Example:
-  // {
-  //   context: '/api',
-  //   target: 'http://www.example.com/',
-  //   changeOrigin: true,
-  // },
+  {
+    context: '/scrm',
+    target: 'http://wx-test1.by-health.com',
+   
+    changeOrigin: true,
+  },
 ] as ProxyConfig[];
