@@ -29,7 +29,7 @@ const webpackConfig: webpack.Configuration = {
     path: paths.BUILD_DIR,
     filename: isDebug ? '[name].js' : '[name].[hash:8].js',
     chunkFilename: isDebug ? 'thunk/[name].js' : 'thunk/[name].[hash:8].js',
-    publicPath: isDebug ? '/' : process.env.PUBLIC_PATH,
+    publicPath: isDebug ? '/' : process.env.PUBLIC_URL,
   },
 
   resolve: {
