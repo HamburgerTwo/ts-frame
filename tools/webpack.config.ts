@@ -162,7 +162,12 @@ const webpackConfig: webpack.Configuration = {
           {
             loader: 'file-loader',
             options: {
-              name: '[path][name].[ext]',
+              name() {
+                if (process.env.NODE_ENV === 'development') {
+                  return '[path][name].[ext]';
+                }
+                return '[contenthash].[ext]';
+              },
             },
           },
           ]
