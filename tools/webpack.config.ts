@@ -128,6 +128,7 @@ const webpackConfig: webpack.Configuration = {
             exclude: /node_modules/,
             loader: 'typings-for-css-modules-loader',
             options: {
+              localIdentName: isDebug ? '[name]_[local]_[hash:base64:5]' : false,
               modules: true,
               sass: true,
               namedExport: true,
