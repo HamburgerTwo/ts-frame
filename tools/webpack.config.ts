@@ -87,10 +87,7 @@ const webpackConfig: webpack.Configuration = {
               plugins: [
                 // Add vendor prefixes to CSS rules using values from caniuse.com
                 // https://github.com/postcss/autoprefixer
-                require('autoprefixer')({
-                  // flexbox: 'no-2009', // Recommended for modern browsers
-                  browsers: pkg.browserslist,
-                }),
+                require('autoprefixer'),
               ],
             },
           },
@@ -147,10 +144,7 @@ const webpackConfig: webpack.Configuration = {
             plugins: [
               // Add vendor prefixes to CSS rules using values from caniuse.com
               // https://github.com/postcss/autoprefixer
-              require('autoprefixer')({
-                // flexbox: 'no-2009', // Recommended for modern browsers
-                browsers: pkg.browserslist,
-              }),
+              require('autoprefixer'),
             ],
           },
         },]
